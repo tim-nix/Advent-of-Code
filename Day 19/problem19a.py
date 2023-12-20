@@ -22,6 +22,12 @@ def parseInput(lines):
    workflow = lines[:index]
    ratings_str = lines[index + 1:]
 
+   # Turn the strings for each workflow into a dictionary
+   # entry.  The key is the name of the workflow (e.g., 'in')
+   # and the value is a tuple of rules.
+   # A normal rule (with a comparator) will be a 4-tuple, e.g.,
+   # ('x', '>', 1234, 'xgf') with the third value as an
+   # integer and all other values as strings.
    workflow_dict = dict()
    for w in workflow:
       instruct = w.split('{')
@@ -37,6 +43,8 @@ def parseInput(lines):
       
       workflow_dict[name] = checks
 
+   # Turn the string containing the variable values 'xmas'
+   # into a tuple of values (x, m, a, s).
    ratings = []
    for r in ratings_str:
       # chop off the surrounding curly braces and
@@ -57,38 +65,56 @@ if __name__ == '__main__':
    workflow, ratings = parseInput(lines)
    var = dict()
    sum_accepted = 0
-   
+
+   # Iterate through the ratings.
    for r in ratings:
+      # for easy reference, turn the ratings tuple
+      # into a dictionary
       var['x'] = r[0]
       var['m'] = r[1]
       var['a'] = r[2]
       var['s'] = r[3]
 
+      # The initial state is always 'in'
       current = 'in'
+      
+      # Apply rules until the rating leads to an
+      # accept 'A' or reject 'R'.
       while (current != 'A') and (current != 'R'):
-         #print('current = ' + current)
-         #print('workflow[current] = ' + str(workflow[current]))
+         # Given the current workflow, iterate through
+         # the rules.
          for rule in workflow[current]:
-            #print('rule = ' + str(rule))
+            # In this case, none of the previous rules
+            # evaluated to true, so change the state to
+            # this value
             if type(rule) == str:
-               #print('nothing fit, so final case')
                current = rule
                break
+            # In this case, the variable (rule[0]) is
+            # evaluated to determine if it is larger
+            # than the value (rule[2]).  If so, then
+            # the new state becomes rule[3].            
             elif rule[1] == '>':
-               #print('comparing ' + rule[0] + ' = ' + str(var[rule[0]]) + ' > ' + str(rule[2]))
                if var[rule[0]] > rule[2]:
-                  #print('comparison passed')
                   current = rule[3]
                   break
+            # In this case, the variable (rule[0]) is
+            # evaluated to determine if it is smaller
+            # than the value (rule[2]).  If so, then
+            # the new state becomes rule[3].
             elif rule[1] == '<':
-               #print('comparing ' + rule[0] + ' = ' + str(var[rule[0]]) + ' < ' + str(rule[2]))
                if var[rule[0]] < rule[2]:
-                  #print('comparison passed')
                   current = rule[3]
                   break
-               
+
+      # if the current state is an accept state, then
+      # add the sum of the variables 'xmas' to the
+      # running total.
       if current == 'A':
          sum_accepted += sum(r)
+
+   # print out the running total sum of all ratings that
+   # were accepted.
    print('sum of accepted ratings = ' + str(sum_accepted))
    
    
