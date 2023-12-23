@@ -39,7 +39,6 @@ def parseInput(lines):
 # is marked with the current step number.  Then
 # the map and the map copy are swapped, and the
 # process is repeated.
-
 if __name__ == '__main__':
    lines = readFile("input21b.txt")
    area_map = parseInput(lines)
