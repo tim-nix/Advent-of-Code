@@ -59,11 +59,11 @@ if __name__ == '__main__':
 
    # Use sympy to solve system of equations
    # Add solution labels.
-   x_r, y_r, z_r, dx_r, dy_r, dz_r = sympy.symbols('x_r, y_r, z_r, dx_r, dy_r, dz_r')
+   x_r, y_r, z_r, dx_r, dy_r, dz_r = sympy.symbols('x_r y_r z_r dx_r dy_r dz_r', integer = True)
    
    # Add equations
    equations = []
-   for x_i, y_i, z_i, dx_i, dy_i, dz_i in hailstones:
+   for x_i, y_i, z_i, dx_i, dy_i, dz_i in hailstones[:10]:
       equations.append((x_r - x_i) * (dy_i - dy_r) - (y_r - y_i) * (dx_i - dx_r))
       equations.append((y_r - y_i) * (dz_i - dz_r) - (z_r - z_i) * (dy_i - dy_r))
       equations.append((z_r - z_i) * (dx_i - dx_r) - (x_r - x_i) * (dz_i - dz_r))
