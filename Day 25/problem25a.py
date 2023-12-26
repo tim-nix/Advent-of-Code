@@ -1,6 +1,7 @@
 # This solution uses the networkx library to determine
 # the minimum cut set of the graph.
 import networkx
+import time
 
 def readFile(filename):
    lines = []
@@ -38,6 +39,7 @@ def parseInput(lines):
 
 
 if __name__ == '__main__':
+   start_time = time.time()
    # Read in the file and organize the data.
    lines = readFile("input25b.txt")
 
@@ -67,6 +69,8 @@ if __name__ == '__main__':
    # The answer is the product of the sizes of the two
    # components.
    print('result = ' + str(len(components[0]) * len(components[1])))
+
+   print("\n\n--- %s seconds ---" % (time.time() - start_time))
          
          
 
