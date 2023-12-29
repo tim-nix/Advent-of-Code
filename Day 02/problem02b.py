@@ -1,3 +1,6 @@
+# Scan through each game and determine the minimal
+# number of stones of each color to be able to get
+# the results shown within the game.
 
 # Read in the data file and convert it to a list
 # of strings.

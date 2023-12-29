@@ -1,3 +1,7 @@
+
+
+# Read in the data file and convert it to a list
+# of strings.
 def readFile(filename):
    lines = []
    try:
@@ -26,16 +30,17 @@ if __name__ == '__main__':
       done = False
       x_index = 0
       while not done:
-         # find *
+         # Find the multiplication symbol, *
          while (x_index < len(line)) and (line[x_index] != '*'):
             x_index += 1
 
+         
          if x_index >= len(line):
             done = True
          else:
+            # If the symbol is found, look for two adjacent numbers.
             numbers = []
-            # look for two adjacent numbers
-            # look top-left
+            # Look above and to the left.
             if ((y_index - 1) >= 0) and ((x_index - 1) >= 0):
                if lines[y_index - 1][x_index - 1].isdigit():
                   first = x_index - 1
@@ -47,7 +52,7 @@ if __name__ == '__main__':
 
                   numbers.append((y_index - 1, first, last))
 
-            # look top
+            # Look above.
             if ((y_index - 1) >= 0):
                if lines[y_index - 1][x_index].isdigit():
                   first = x_index
@@ -60,7 +65,7 @@ if __name__ == '__main__':
                   if (y_index - 1, first, last) not in numbers:
                      numbers.append((y_index - 1, first, last))
 
-            # look top-right
+            # Look above and to the right.
             if ((y_index - 1) >= 0) and ((x_index + 1) < len(line)):
                if lines[y_index - 1][x_index + 1].isdigit():
                   first = x_index + 1
@@ -73,7 +78,7 @@ if __name__ == '__main__':
                   if (y_index - 1, first, last) not in numbers:
                      numbers.append((y_index - 1, first, last))
 
-            # look left
+            # Look to the left.
             if ((x_index - 1) >= 0):
                if lines[y_index][x_index - 1].isdigit():
                   last = x_index - 1
@@ -84,7 +89,7 @@ if __name__ == '__main__':
                   if (y_index, first, last) not in numbers:
                      numbers.append((y_index, first, last))
 
-            # look right
+            # Look to the right.
             if ((x_index + 1) < len(line)):
                if lines[y_index][x_index + 1].isdigit():
                   first = x_index + 1
@@ -95,7 +100,7 @@ if __name__ == '__main__':
                   if (y_index, first, last) not in numbers:
                      numbers.append((y_index, first, last))
 
-            # look bottom-left
+            # Look below and to the left.
             if ((y_index + 1) < len(lines)) and ((x_index - 1) >= 0):
                if lines[y_index + 1][x_index - 1].isdigit():
                   first = x_index - 1
@@ -107,7 +112,7 @@ if __name__ == '__main__':
 
                   numbers.append((y_index + 1, first, last))
 
-            # look bottom
+            # Look below.
             if ((y_index + 1) < len(lines)):
                if lines[y_index + 1][x_index].isdigit():
                   first = x_index
@@ -120,7 +125,7 @@ if __name__ == '__main__':
                   if (y_index + 1, first, last) not in numbers:
                      numbers.append((y_index + 1, first, last))
 
-            # look bottom-right
+            # Look below and to the right.
             if ((y_index + 1) < len(lines)) and ((x_index + 1) < len(line)):
                if lines[y_index + 1][x_index + 1].isdigit():
                   first = x_index + 1
@@ -133,8 +138,9 @@ if __name__ == '__main__':
                   if (y_index + 1, first, last) not in numbers:
                      numbers.append((y_index + 1, first, last))
             
-            # if found, multiply them together and add to ratios
-            print(numbers)
+            # If exactly two numbers are found, convert them
+            # to integers and multiply them together and append
+            # the result to the list of ratios.
             if len(numbers) == 2:
                y, first, last = numbers[0]
                number1 = ''
@@ -149,5 +155,6 @@ if __name__ == '__main__':
             # continue down the line
             x_index += 1
 
-   print(ratios)
+   #print(ratios)
+   # Calculate the sum of the rations and print the results.
    print('sum = ' + str(sum(ratios)))
