@@ -1,4 +1,9 @@
-
+# Iterate through each line of text looking for the
+# multiplication symbol, '*'.  When one is found, look
+# adjacent to the symbol for exactly two numbers (zero,
+# one, or three or more numbers are ignored).  If found,
+# multiply the two numbers together and, finally, calculate
+# the sum of these products (gear ratios).
 
 # Read in the data file and convert it to a list
 # of strings.
