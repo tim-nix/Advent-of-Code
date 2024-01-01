@@ -1,3 +1,13 @@
+# For each race (time, distance), determine how many
+# ways there are to hold the button for some amount
+# of time, so that when released, the boat will
+# travel farther than the specified distance. Multiply
+# the number of ways for each race together.
+
+import time
+
+# Read in the data file and convert it to a list
+# of strings.
 def readFile(filename):
    lines = []
    try:
@@ -17,6 +27,12 @@ def readFile(filename):
    return lines
 
 
+
+# The file input consists of two lines of text:
+# a line of times and a line of (goal) distances.
+# Convert each line into a list of integers, and
+# pair up each time with its corresponding distance
+# (as a tuple), returning a list of the tuples.
 def parseInput(lines):
    times = lines[0].split(':')
    distances = lines[1].split(':')
@@ -29,6 +45,9 @@ def parseInput(lines):
    return results
 
 
+# Calculate the distance traveled as the product
+# of the run time (time after the button is released)
+# and the length of time that the buttone is held.
 def calcDistance(b_time, t_time):
    run_time = t_time - b_time
    distance = run_time * b_time
@@ -37,13 +56,23 @@ def calcDistance(b_time, t_time):
 
 
 if __name__ == '__main__':
+   start_time = time.time()
    lines = readFile("input6b.txt")
    results = parseInput(lines)
 
+   # For each time, distance goal pair, determine the
+   # number of ways to win by holding down the button
+   # for all integer lengths of times from zero to
+   # time - 1.
    output = 1
-   for time, goal in results:
-      wins = [ calcDistance(i, time) > goal for i in range(time) ]
+   for r_time, goal in results:
+      wins = [ calcDistance(i, r_time) > goal for i in range(r_time) ]
+      # Multiply these numbers together to determine the
+      # desired output.
       output *= wins.count(True)
 
+   # Display the results.
    print('output = ' + str(output))
+
+   print("\n\n--- %s seconds ---" % (time.time() - start_time))
    
