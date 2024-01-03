@@ -1,5 +1,19 @@
+# Using multiple starting locations, determine the
+# number of steps needed so that, if all paths were
+# followed simultaneously until all paths reach a
+# destination in the same number of steps. The
+# solution is not tractable if all paths are
+# followed simultaneously repeatedly until all paths
+# reach a distination. Therefore, for each path, we
+# determine the cycle size; that is, the number of
+# steps needed for a single path the reach its
+# destination. Then, the least common multiple is
+# calculated to determine the total needed steps.
+import time
 from math import gcd
 
+# Read in the data file and convert it to a list
+# of strings.
 def readFile(filename):
    lines = []
    try:
@@ -19,6 +33,15 @@ def readFile(filename):
    return lines
 
 
+# Separate the input into the directions (steps)
+# and the map.  The directions consist of a list
+# of characters ('R' and 'L') with 'R' corresponding
+# to a step to the right and 'L' corresponding to
+# a step to the left. The map is a dictionary
+# in which the index is the 'from' location and
+# the value is the 'to' locations (two locations
+# corresponding to a step left and a step right)
+# stored as a tuple.
 def parseInput(lines):
    desert_map = {}
    steps = list(lines[0])
@@ -34,6 +57,8 @@ def parseInput(lines):
    return (steps, desert_map)
 
 
+# Build a list of all starting locations; that is,
+# all locations that end with an 'A'.
 def genStart(locations):
    start = []
    for loc in locations:
@@ -45,12 +70,18 @@ def genStart(locations):
 
 
 if __name__ == '__main__':
+   start_time = time.time()
    lines = readFile("input8b.txt")
    steps, desert_map = parseInput(lines)
-   print(len(desert_map))
 
+   # Generate the collection of starting locations
+   # as a list.
    locations = genStart(desert_map.keys())
-   print(locations)
+
+   # For each starting location, repeatedly follow
+   # the directions until the destination is reached
+   # (any location that ends in a 'Z').  Determine
+   # how many steps it took and store this value.
    cycles = []
    for location in locations:
       num_steps = 0
@@ -65,15 +96,26 @@ if __name__ == '__main__':
             else:
                print('Error: unknown step: ' + step)
             num_steps += 1
+            # Once the destination is reached, record the
+            # number of steps needed and follow the next
+            # path (if it exists).
             if loc[2] == 'Z':
-               print('found the end in ' + str(num_steps) + ' steps.')
+               #print('found the end in ' + str(num_steps) + ' steps.')
                cycles.append(num_steps)
                done = True
                break
 
-   print('cycles = ' + str(cycles))
+   # Given these cycle sizes, determin the least common
+   # multiple.  The LCM will be the number of steps needed
+   # for all paths to reach their destination at the same
+   # time and display the results.
+   #print('cycles = ' + str(cycles))
    lcm = 1
    for i in cycles:
       lcm = lcm * i // gcd(lcm, i)
 
    print('number of steps = ' + str(lcm))
+   
+   print("\n\n--- %s seconds ---" % (time.time() - start_time))
+
+   
